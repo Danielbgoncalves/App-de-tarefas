@@ -1,0 +1,103 @@
+﻿@page "/timetarefas"
+@inject TarefasService TarefasService
+
+<PageTitle>Tarefas do seu time</PageTitle>
+<MudText Typo="Typo.h4" Style="margin-bottom: 10px; width:100%">Tarefas do seu time</MudText>
+
+
+<MudContainer>
+    <MudGrid>
+
+        @if(TarefasService.Tarefas.Any(tarefa => (!tarefa.Concluida && !tarefa.Excluida)))
+        {
+            @foreach(Tarefa tarefa in TarefasService.Tarefas.Where(tarefa => !tarefa.Concluida && !tarefa.Excluida))
+            { 
+                <MudItem xs="12" sm="6" md="4" >
+                    <MudCard Elevation="tarefa.ElevationLevel" Style="background-color: #f8f8f8;" @onmouseover="() => tarefa.ElevationChange(5)" @onmouseout="() => tarefa.ElevationChange(2)">
+                        <MudCardContent >
+                            <MudText Typo="Typo.h6" Style="margin-bottom: 10px">@tarefa.Titulo</MudText>
+                            <MudText Typo="Typo.body2" Style="margin-bottom: 15px; ">@tarefa.Descricao</MudText>
+                            <MudText Typo="Typo.body2" Style="margin-bottom: 10px; ">Criada por @tarefa.NomeUsuarioCriador</MudText>
+                            <MudText Typo="Typo.body2">A ser concluida até @tarefa.DataFinal.ToString("dd/MM/yyyy")</MudText>
+                        </MudCardContent>
+                        <MudCardActions class="justify-end">
+                            <MudButton OnClick="() => tarefa.MarcarComoConcluida()" Color="Color.Success" class="mr-1" >Concluir</MudButton>
+                            <MudButton OnClick="() => tarefa.ExcluirTarefa()" Color="Color.Error">Excluir</MudButton>
+                        </MudCardActions>
+                    </MudCard>
+                </MudItem>
+            }
+        }
+        else 
+        {
+            <MudText class="m-5" xs="12">
+                Não há tarefas a serem realizadas. Descanse!
+            </MudText>
+        }
+        
+        <MudText Typo="Typo.h5" class="ml-3" Style="display: block; margin-top: 20px; width:100%">Já concluídas</MudText>
+        @foreach(Tarefa tarefa in TarefasService.Tarefas)
+        { 
+            if(tarefa.Concluida && !tarefa.Excluida)
+            {
+                <MudItem xs="12" sm="6" md="4" >
+                    <MudCard Elevation="tarefa.ElevationLevel" Style="background-color: #ffe7e7; min-height: 200px; position: relative" @onmouseover="() => tarefa.ElevationChange( 5)" @onmouseout="() => tarefa.ElevationChange(2)">
+                        <MudCardContent >
+                            <MudText Typo="Typo.h6" Style="margin-bottom: 10px">@tarefa.Titulo</MudText>
+                            <MudText Typo="Typo.body2" Style="margin-bottom: 10px; ">@tarefa.Descricao</MudText>
+                                <MudText Typo="Typo.body2">A ser concluida até @tarefa.DataFinal.ToString("dd/MM/yyyy")</MudText>
+                        </MudCardContent>
+                        <MudCardActions class="justify-end">
+                            <MudButton OnClick="() => tarefa.ExcluirTarefa()" Color="Color.Error">Excluir</MudButton>
+                        </MudCardActions>
+                    </MudCard>
+                </MudItem>
+            }
+        }
+    </MudGrid>
+</MudContainer>
+<br><br>
+<h6 Class="text-muted m-1 " style="position:relative; botton:5px"  >Você pode encontrar as suas tarefas <a href="/suastarefas">clicando aqui</a> </h6>
+
+
+
+@code
+{
+   /* private List<Tarefa> Tarefas = new List<Tarefa>
+    {
+        new Tarefa {Id = 1,NomeUsuarioCriador ="João Sucupira" , Titulo =  "Estudar .NET", Descricao = "Aprender o básico de Blazor", DataFinal = DateTime.Parse("2024-12-02 12:00"),  Concluida = false, Excluida = false},
+        new Tarefa {Id = 2,NomeUsuarioCriador ="João Sucupira" , Titulo =  "Fazer exercício de C#",  Descricao = "Implementar um CRUD", DataFinal = DateTime.Parse("2024-12-02 12:00"),  Concluida = false, Excluida = false},
+        new Tarefa {Id = 3,NomeUsuarioCriador ="João Sucupira" , Titulo =  "Criar um app web", Descricao = "Testar uma aplicação Blazor", DataFinal = DateTime.Parse("2024-12-02 12:00"),  Concluida = true, Excluida = false},
+        new Tarefa {Id = 4,NomeUsuarioCriador ="João Sucupira" , Titulo =  "Aprender estilização", Descricao = "Usar Style, Typo e colocar umas cores nada a ver em qualquer canto no Blazor", DataFinal = DateTime.Parse("2024-12-02 12:00"),  Concluida = true, Excluida = false},
+    };*/
+
+   /* public class Tarefa
+    {
+        public int Id {get; set;}
+        public string NomeUsuario {get; set;} =  string.Empty;
+        public string Titulo {get; set;} = string.Empty;
+        public string Descricao {get; set;} = string.Empty;
+        public Boolean Concluida {get; set;}
+        public DateTime DataFinal {get; set;}
+        public int ElevationLevel {get; set;} = 1;
+
+        public Boolean Excluida {get; set;}
+    }
+    void MarcarComoConcluida(Tarefa tarefa)
+    {
+        tarefa.Concluida = true;
+    }
+    void ExcluirTarefa(Tarefa tarefa)
+    {
+        tarefa.Concluida = true;
+        tarefa.Excluida = true;
+    }
+
+    void ElevationChange(Tarefa tarefa, int level)
+    {
+        tarefa.ElevationLevel = level;
+    }*/
+
+}
+
+

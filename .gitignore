@@ -1,0 +1,14 @@
+# Pastas do build
+bin/
+obj/
+
+# Configurações locais do Visual Studio/Code
+.vscode/
+*.user
+*.suo
+
+# Dados sensíveis
+appsettings.json
+
+# Do Windows
+desktop.ini

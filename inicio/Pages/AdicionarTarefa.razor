@@ -1,0 +1,92 @@
+@page "/criartarefa"
+@inject TarefasService TarefasService
+
+<PageTitle>Criar Tarefas</PageTitle>
+
+<MudContainer MaxWidth="MaxWidth.Medium">
+    <MudText Typo="Typo.h3" Align="Align.Center" GutterBottom="true">Nova Tarefa</MudText>
+    <MudGrid Spacing="12" Class="mt-16">
+        <MudItem xs="7">
+            <MudText Typo="Typo.h6" GutterBottom="true">Descreva os detalhes....</MudText>
+            <MudGrid>
+                <MudItem xs="12">
+                    <MudTextField T="string" Label="Titulo" @bind-Value="TarefaTitulo" />
+                </MudItem>
+                <MudItem xs="12">
+                    <MudTextField T="string" Label="Descrição" Lines="3" @bind-Value="TarefaDescricao" />
+                </MudItem>
+                <MudItem xs="12">
+                    <MudDatePicker Label="Editable with Placeholder" Editable="true" @bind-Date="DataLimiteparaConclusao" Placeholder="Select Date" /> <!-- essa DESGRAÇAAAAAAAAAAAAAAAAAAAAAAAAAAAAA não funciona direto merdaaaaaaaaaaaaaaaaaaaaaaaaaaa onmouseover selecionar data Placeholder calendario Nova funciona pq deus merdaaaaaaaaaaaaaaaaaaaaaaaaaaa ME ODEIA,-- não existe outro motivo.-- não existe motivo produtividade essa BOSTA não FUNCINOARRRRRRRRR -->
+                    <p>Data selecionada: @DataLimiteparaConclusao</p>
+                </MudItem>
+                <MudItem xs="12" Class="d-flex justify-center">
+                    <MudButton Variant="Variant.Filled" DropShadow="false" Color="Color.Primary" Size="Size.Large" Class="mt-8" OnClick="CriarTask">Criar!</MudButton>
+                </MudItem>
+            </MudGrid>
+        </MudItem>
+        <MudItem xs="5">
+            <MudText Typo="Typo.h5" GutterBottom="true">Informações</MudText>
+            <MudPaper Class="d-flex flex-column" Style="height:100%; background-color: #f8f8f8" Outlined="true">
+                <MudList T="string">
+                    <MudListItem Icon="@Icons.Material.Filled.AccessTime">
+                        <div class="d-flex">
+                            <MudText>Atenção à data de conclusão ein</MudText>
+                        </div>
+                    </MudListItem>
+                    <MudListItem Icon="@Icons.Material.Filled.EmojiPeople">
+                        <div class="d-flex">
+                            <MudText>Todos da sua equipe poderão ver essa tarefa</MudText>
+                        </div>
+                    </MudListItem>
+                    <MudListItem Icon="@Icons.Material.Filled.Create">
+                        <div class="d-flex">
+                            <MudText>Sua tarefa será instantanemanete criada!</MudText>
+                        </div>
+                    </MudListItem>
+                    <MudListItem Icon="@Icons.Material.Filled.TipsAndUpdates">
+                        <div class="d-flex">
+                            <MudText>Você poderá atualiza-la quando quiser</MudText>
+                        </div>
+                    </MudListItem>
+                </MudList>
+                <div class="mt-auto">
+                    <MudDivider />
+                    <div class="d-flex pa-4">
+                        <MudText>Boa produtividade! 😁</MudText>
+                    </div>
+                </div>
+            </MudPaper>
+        </MudItem>
+    </MudGrid>
+</MudContainer>
+
+<br>
+<p>.</p>
+
+@code
+{
+    private DateTime? _date = DateTime.Today;    
+    private DateTime? DataLimiteparaConclusao { get; set; } = DateTime.Today;
+    public string TarefaTitulo { get; set; } = string.Empty;
+    public string TarefaDescricao { get; set; } = string.Empty;
+
+    private void CriarTask()
+    {
+        var novaTarefa = new Tarefa
+        {
+            //Id = 1, Não precisamos especificar o Id, o bando dde dados faz uso de AUTOINCREMENT
+            NomeUsuarioCriador = "João Sucupira",
+            Titulo = TarefaTitulo,
+            Descricao = TarefaDescricao,
+            DataFinal = DataLimiteparaConclusao ?? DateTime.Today,
+            Concluida = false,
+            Excluida = false
+        };
+
+        TarefasService.AddTarefa(novaTarefa);
+
+        // Limpar os campos do formulário
+        TarefaTitulo = "";
+        TarefaDescricao = "";
+    }
+}
